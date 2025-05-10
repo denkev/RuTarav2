@@ -96,6 +96,10 @@
           break;
         }
       }
+
+      document.getElementById("jeepType").innerText = jeep;
+      document.getElementById("jeepPic").src = imagePath;
+      
       const map = L.map('map').setView([14.5465, 121.0014], 14);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -114,9 +118,6 @@
       // Optional markers
       L.marker(routeCoords[0]).addTo(map).bindPopup('Pasay Rotonda').openPopup();
       L.marker(routeCoords[1]).addTo(map).bindPopup('EDSA Taft');
-
-      document.getElementById("jeepType").innerText = jeep;
-      document.getElementById("jeepPic").src = imagePath;
     }
   </script>
 </body>
