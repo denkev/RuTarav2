@@ -216,6 +216,12 @@
         })
     });
 
+    if (!response.ok) {
+      console.error("ORS API error:", await response.text());
+      alert("Route drawing failed. Check coordinates or API key.");
+      return;
+    }
+
     const data = await response.json();
 
       // Remove old route if it exists
