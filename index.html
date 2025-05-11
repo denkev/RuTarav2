@@ -66,6 +66,8 @@
 
   <img id="jeepPic" class="jeep-image" src="images/jeepBG.png" alt="Jeep Preview" />
   <div id="map" style="height: 400px; width: 90%; margin: 20px auto; border: 2px solid white;"></div>
+  <h3>Recently Searched</h3>
+  <ul id="recentList" style="list-style: none; padding: 0; color: white;"></ul>
 
   <script>
     const jeepRoutes = [
@@ -240,6 +242,50 @@
 
       map.fitBounds(currentRouteLine.getBounds());
     }
+    
+    function updateRecentSearches(from, to) {
+    const key = "recentRoutes";
+    const maxItems = 5;
+
+    let recent = JSON.parse(localStorage.getItem(key)) || [];
+
+    const routeStr = `${from} -> ${to}`;
+
+    // Remove duplicate if exists
+    recent = recent.filter(r => r !== routeStr);
+
+    // Add to top
+    recent.unshift(routeStr);
+
+    // Trim list
+    if (recent.length > maxItems) recent = recent.slice(0, maxItems);
+
+    // Save back
+    localStorage.setItem(key, JSON.stringify(recent));
+
+    renderRecentList();
+  }
+
+  function renderRecentList() {
+    const recent = JSON.parse(localStorage.getItem("recentRoutes")) || [];
+    const list = document.getElementById("recentList");
+
+    list.innerHTML = "";
+    recent.forEach(routeStr => {
+      const li = document.createElement("li");
+      li.innerHTML = `<button style="background: #222; color: white; border: none; padding: 5px 10px; margin: 5px;">${routeStr}</button>`;
+      li.querySelector("button").onclick = () => {
+        const [from, to] = routeStr.split(" -> ");
+        document.getElementById("Address1").value = from;
+        document.getElementById("Address2").value = to;
+        findJeep();
+      };
+    list.appendChild(li);
+    });
+  }
+
+  // Initial render on load
+  renderRecentList();
 
   </script>
 </body>
