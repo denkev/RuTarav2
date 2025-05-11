@@ -113,7 +113,7 @@
         from: "Alabang",
         to: "Pasay Rotonda",
         image: "jeepF",
-        coords: [[121.04547597078542, 14.419524645663536],[121.00038054378574, 14.539305881657619]
+        coords: [[121.04547597078542, 14.419524645663536],[121.00038054378574, 14.539305881657619]]
     },
     {
         name: "Dapitan",
@@ -161,19 +161,25 @@
           const toMatch = route.to.toLowerCase() === address2 ||
           (route.landmarks && route.landmarks.map(l => l.toLowerCase()).includes(address2));
 
+          const reverseFromMatch = route.to.toLowerCase() === address1 ||
+          (route.landmarks && route.landmarks.map(l => l.toLowerCase()).includes(address1));
+
+          const reverseToMatch = route.from.toLowerCase() === address2 ||
+          (route.landmarks && route.landmarks.map(l => l.toLowerCase()).includes(address2));
+
+          // Normal direction match
           if (fromMatch && toMatch) {
-            selectedRoute = route;
+            selectedRoute = { ...route, coords: [...route.coords] }; // clone coords
             break;
           }
-          
-          if (
-            route.from.toLowerCase() === address1 &&
-            route.to.toLowerCase() === address2
-          ) {
-            selectedRoute = route;
+
+          // Reverse direction match
+          if (reverseFromMatch && reverseToMatch) {
+            selectedRoute = { ...route, coords: [...route.coords].reverse() }; // reverse for backward trip
             break;
-            }
-        } 
+          }
+        }
+
 
         const finalText = `${address1} to ${address2}`;
         document.getElementById("finalAddress").innerText = finalText;
