@@ -188,7 +188,6 @@
         if (selectedRoute) {
             document.getElementById("jeepType").innerText = selectedRoute.name;
             document.getElementById("jeepPic").src = `images/${selectedRoute.image}.jpg`;
-
             // Clear previous route
             if (currentRouteLine) {
                 map.removeLayer(currentRouteLine);
@@ -196,6 +195,7 @@
 
             // Draw new route on map
             await drawJeepRoute(selectedRoute.coords);
+            updateRecentSearches(address1, address2);
         }
         else {
             document.getElementById("jeepType").innerText = "No suitable jeep found";
