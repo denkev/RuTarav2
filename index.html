@@ -169,13 +169,12 @@
 
           // Normal direction match
           if (fromMatch && toMatch) {
-            selectedRoute = { ...route, coords: [...route.coords] }; // clone coords
+            selectedRoute = route;
             break;
           }
 
-          // Reverse direction match
-          if (reverseFromMatch && reverseToMatch) {
-            selectedRoute = { ...route, coords: [...route.coords].reverse() }; // reverse for backward trip
+          if (reverseFromMatch && reverseToMatch && route.coords && Array.isArray(route.coords)) {
+            selectedRoute = { ...route, coords: [...route.coords].reverse() };
             break;
           }
         }
