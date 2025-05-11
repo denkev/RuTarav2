@@ -69,77 +69,38 @@
 
   <script>
     const jeepRoutes = [
-    {
-        name: "Malibay",
-        from: "Malibay",
-        to: "MOA",
-        image: "jeepA",
-        coords: [[14.534243629925593, 121.00925145393822],[14.535333112520549, 120.98197982661377]],
-        landmarks: ["Magallanes", "Evangelista", "Cabrera", "Metropoint", "MRT", "LRT", "STI", "Harisson", "Roxas",
-        "Bluebay", "Double Dragon", "Shell", "Shore", "Heritage", "Tramo", "Plaza"]
-    },
-    {
-        name: "Dominga",
-        from: "Dominga",
-        to: "Libertad",
-        image: "jeepB",
-        coords: [[14.558775344962784, 120.99782994479563],[14.547662776014228, 120.99873466590616]]
-    },
-    {
-        name: "Cabrera",
-        from: "Cabrera",
-        to: "Libertad",
-        image: "jeepC",
-        coords: [[14.54327691706474, 121.00595154408414],[14.547662776014228, 120.99873466590616]]
-    },
-    {
-        name: "Evangelista",
-        from: "Evangelista",
-        to: "Libertad",
-        image: "jeepD",
-        coords: [[14.540730762791382, 121.01194427919326],[14.547662776014228, 120.99873466590616]]
-    },
-    {
-        name: "Dian",
-        from: "Dian",
-        to: "Libertad",
-        image: "jeepE",
-        coords: [[14.559460260744837, 121.00307132662662],[14.547662776014228, 120.99873466590616]]
-    },
-
-      // Jeeps that just pass through Pasay
-    {
-        name: "Alabang",
-        from: "Alabang",
-        to: "Pasay Rotonda",
-        image: "jeepF",
-        coords: [[14.419524645663536, 121.04547597078542],[14.539305881657619, 121.00038054378574]]
-    },
-    {
-        name: "Dapitan",
-        from: "Dapitan",
-        to: "Baclaran",
-        image: "jeepG",
-        coords: [[14.619767281813315, 120.99703878561367],[14.534247616100144, 120.99834992456219]]
-    },
-    {
-        name: "MCU",
-        from: "MCU",
-        to: "Baclaran",
-        image: "jeepH",
-        coords: [[14.658365985713615, 120.98681466924769],[[14.534247616100144, 120.99834992456219]]]
-    },
-    {
-        name: "PRC",
-        from: "Buendia",
-        to: "Chino Roces",
-        image: "jeepI",
-        coords: [[14.554159031370235, 120.99756959779066],[14.57578453398394, 121.01704106553109]]
-    }
+      { from: "Pasay Rotonda", to: "EDSA Taft", jeep: "jeepA" },
+      { from: "EDSA Taft", to: "Baclaran", jeep: "jeepB" },
+      { from: "Baclaran", to: "Libertad", jeep: "jeepC" },
+      { from: "Libertad", to: "Cartimar", jeep: "jeepD" },
+      { from: "Cartimar", to: "Gil Puyat", jeep: "jeepE" }
     ];
 
+    function findJeep() {
+      const address1 = document.getElementById("Address1").value.trim();
+      const address2 = document.getElementById("Address2").value.trim();
 
-    const map = L.map('map').setView([14.5465, 121.0014], 14);
+      const finalText = `${address1} to ${address2}`;
+      document.getElementById("finalAddress").innerText = finalText;
+
+      let jeep = "No suitable jeep found";
+      let imagePath = "images/jeepDefault.jpg";
+
+      for (let route of jeepRoutes) {
+        if (
+          route.from.toLowerCase() === address1.toLowerCase() &&
+          route.to.toLowerCase() === address2.toLowerCase()
+        ) {
+          jeep = route.jeep;
+          imagePath = `images/${jeep}.jpg`;
+          break;
+        }
+      }
+
+      document.getElementById("jeepType").innerText = jeep;
+      document.getElementById("jeepPic").src = imagePath;
+      
+      const map = L.map('map').setView([14.5465, 121.0014], 14);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
