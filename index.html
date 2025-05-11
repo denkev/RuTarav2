@@ -147,7 +147,7 @@
 
     let currentRouteLine = null;
 
-    function findJeep() {
+    async function findJeep() {
         const address1 = document.getElementById("Address1").value.trim().toLowerCase();
         const address2 = document.getElementById("Address2").value.trim().toLowerCase();
 
@@ -188,8 +188,7 @@
             }
 
             // Draw new route on map
-            currentRouteLine = L.polyline(selectedRoute.coords, { color: 'green' }).addTo(map);
-            map.fitBounds(currentRouteLine.getBounds());
+            await drawJeepRoute(selectedRoute.coords);
         }
         else {
             document.getElementById("jeepType").innerText = "No suitable jeep found";
@@ -201,6 +200,36 @@
                 }
         }
     }
+
+    async function drawJeepRoute(coords) {
+    const apiKey = 'YOUR_ORS_API_KEY'; // 🔑 Replace with your actual OpenRouteService API key
+    const url = 'https://api.openrouteservice.org/v2/directions/driving-car/geojson';
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': apiKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            coordinates: coords
+        })
+    });
+
+    const data = await response.json();
+
+      // Remove old route if it exists
+      if (currentRouteLine) {
+        map.removeLayer(currentRouteLine);
+      }
+
+      currentRouteLine = L.geoJSON(data, {
+        style: { color: 'green', weight: 5 }
+      }).addTo(map);
+
+      map.fitBounds(currentRouteLine.getBounds());
+    }
+
   </script>
 </body>
 </html>
