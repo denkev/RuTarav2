@@ -35,10 +35,11 @@
       width: 180px;
     }
     .jeep-image {
-      width: 200px;
-      height: 130px;
+      width: 100%;
+      max-width: 1000px;
+      height: auto;
       border: 2px solid white;
-      object-fit: cover;
+      display: block;
       margin: 20px auto;
     }
     button {
@@ -154,6 +155,10 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
 
     let currentRouteLine = null;
 
